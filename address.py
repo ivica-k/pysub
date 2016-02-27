@@ -2,12 +2,9 @@
 
 from netaddr import *
 
-class IPAddress():
+
+class IPAddress:
 	def __init__(self, input_address=None):
-		'''
-		Prikaz upotrebe klase iz posebnog modula. Nema velike potrebe za ovim, ali je program pisan u edukativne svrhe
-		 pa ne škodi
-		'''
 		if input_address:
 			self.ip = IPNetwork(input_address).ip
 			self.broadcast = IPNetwork(input_address).broadcast
@@ -17,13 +14,26 @@ class IPAddress():
 			self.last_address = self.broadcast - 1
 			self.num_hosts = IPNetwork(input_address).size - 2
 			self.network_class = self.__get_network_class(input_address)
+			self.default_subnet = self.__get_default_subnet(input_address)
 
-	def __get_network_class(self, input_address):
-		threshold = input_address[0:3].replace('.','')
+	@staticmethod
+	def __get_network_class(input_address):
+		threshold = input_address.split('.')[0]
 
 		if int(threshold) <= 127:
 			return 'A'
-		elif int(threshold) >= 128 and int(threshold) < 192:
+		elif 128 <= int(threshold) < 192:
 			return 'B'
 		elif int(threshold) >= 192:
 			return 'C'
+
+	@staticmethod
+	def __get_default_subnet(input_address):
+		threshold = input_address.split('.')[0]
+
+		if int(threshold) <= 127:
+			return 8
+		elif 128 <= int(threshold) < 192:
+			return 16
+		elif int(threshold) >= 192:
+			return 24

@@ -20,9 +20,13 @@ class PySub(QMainWindow):
 		"""
 		Helper function to run all other functions in correct order
 		"""
+		self.__setup_signals()
 		self.__validate_input()
 		self.handle_input()
 		self.set_labels()
+
+	def __setup_signals(self):
+		self.ui.btn_default_subnet.clicked.connect(self.__get_default_subnet)
 
 	def handle_input(self):
 		"""
@@ -46,6 +50,9 @@ class PySub(QMainWindow):
 		self.ui.lab_network_address.setText(str(self.address.network_address))
 		self.ui.lab_num_ips.setText(str(self.address.num_hosts))
 		self.ui.lab_subnet_mask.setText(str(self.address.subnet_mask))
+
+	def __get_default_subnet(self):
+		self.ui.spin_subnet.setValue(self.address.default_subnet)
 
 	def __validate_input(self):
 		regex = QRegExp()
