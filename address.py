@@ -13,8 +13,8 @@ class IPAddress:
 			self.first_address = self.network_address + 1
 			self.last_address = self.broadcast - 1
 			self.num_hosts = IPNetwork(input_address).size - 2
-			self.network_class = self.__get_network_class(input_address)
-			self.default_subnet = self.__get_default_subnet(input_address)
+			self.network_class = self.__get_network_class(input_address)  # type: str
+			self.default_subnet = self.__get_default_subnet(input_address)  # type: int
 
 	@staticmethod
 	def __get_network_class(input_address):

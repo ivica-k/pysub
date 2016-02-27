@@ -23,10 +23,12 @@ class PySub(QMainWindow):
 		self.__setup_signals()
 		self.__validate_input()
 		self.handle_input()
-		self.set_labels()
+
 
 	def __setup_signals(self):
 		self.ui.btn_default_subnet.clicked.connect(self.__get_default_subnet)
+		self.ui.line_IP.textChanged.connect(self.handle_input)
+		self.ui.spin_subnet.valueChanged.connect(self.handle_input)
 
 	def handle_input(self):
 		"""
@@ -37,8 +39,9 @@ class PySub(QMainWindow):
 		if self.__validate_ip(in_address):  # type: bool
 			ip_with_mask = str(in_address)
 			self.address = IPAddress(ip_with_mask)
+			self.__set_labels()
 
-	def set_labels(self):
+	def __set_labels(self):
 		"""
 		Sets values for all labels
 		:return:
