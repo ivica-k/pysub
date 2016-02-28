@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainwindow.ui'
+# Form implementation generated from reading ui file 'ui/mainwindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.5.1
 #
@@ -284,7 +284,7 @@ class Ui_MainWindow(object):
         self.btn_explain_first_node.setText(_translate("MainWindow", "Explain"))
         self.label_12.setText(_translate("MainWindow", "Last usable address:"))
         self.btn_explain_last_node.setText(_translate("MainWindow", "Explain"))
-        self.label_13.setText(_translate("MainWindow", "Subnet mask (octal):"))
+        self.label_13.setText(_translate("MainWindow", "Subnet mask (decimal):"))
         self.btn_explain_subnet_mask.setText(_translate("MainWindow", "Explain"))
         self.label_14.setText(_translate("MainWindow", "Network address class:"))
         self.btn_explain_address_class.setText(_translate("MainWindow", "Explain"))
@@ -292,5 +292,5 @@ class Ui_MainWindow(object):
         self.btn_explain_num_ips.setText(_translate("MainWindow", "Explain"))
         self.label_39.setText(_translate("MainWindow", "Explanation:"))
         self.menuMenu.setTitle(_translate("MainWindow", "&Menu"))
-        self.actionAbout.setText(_translate("MainWindow", "About"))
+        self.actionAbout.setText(_translate("MainWindow", "&About"))
 

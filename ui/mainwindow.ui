@@ -299,7 +299,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Subnet mask (octal):</string>
+             <string>Subnet mask (decimal):</string>
             </property>
            </widget>
           </item>
@@ -476,7 +476,7 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAbout">
    <property name="text">
-    <string>About</string>
+    <string>&amp;About</string>
    </property>
   </action>
  </widget>
