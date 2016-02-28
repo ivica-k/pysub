@@ -29,7 +29,7 @@ class PySub(QMainWindow):
 		QT signals definition
 		:return:
 		"""
-		self.ui.btn_default_subnet.clicked.connect(self.__get_default_subnet)
+		self.ui.btn_default_subnet.clicked.connect(self.__set_default_subnet)
 		self.ui.line_IP.textChanged.connect(self.handle_input)
 		self.ui.spin_subnet.valueChanged.connect(self.handle_input)
 		self.ui.btn_explain_address_class.clicked.connect(lambda: self.__fill_explanation('address_class'))
@@ -59,7 +59,11 @@ class PySub(QMainWindow):
 		self.ui.lab_num_ips.setText(str(self.address.num_hosts))
 		self.ui.lab_subnet_mask.setText(str(self.address.subnet_mask))
 
-	def __get_default_subnet(self):
+	def __set_default_subnet(self):
+		"""
+		Sets the default subnet
+		:return:
+		"""
 		self.ui.spin_subnet.setValue(self.address.default_subnet)
 
 	def __validate_input(self):
@@ -68,7 +72,9 @@ class PySub(QMainWindow):
 		:return:
 		"""
 		regex = QRegExp()
-		regex.setPattern('(^[2][0-5][0-5]|^[1]{0,1}[0-9]{1,2})\.([0-2][0-5][0-5]|[1]{0,1}[0-9]{1,2})\.([0-2][0-5][0-5]|[1]{0,1}[0-9]{1,2})\.([0-2][0-5][0-5]|[1]{0,1}[0-9]{1,2})$')
+		regex.setPattern(
+			'(^[2][0-5][0-5]|^[1]{0,1}[0-9]{1,2})\.([0-2][0-5][0-5]|[1]{0,1}[0-9]{1,2})\.'
+			'([0-2][0-5][0-5]|[1]{0,1}[0-9]{1,2})\.([0-2][0-5][0-5]|[1]{0,1}[0-9]{1,2})$')
 		validator = QRegExpValidator(regex, self.ui.line_IP)
 		self.ui.line_IP.setValidator(validator)
 
@@ -82,6 +88,11 @@ class PySub(QMainWindow):
 			return True
 
 	def __generate_explanation(self, input_property):
+		"""
+		Generates explanation text for an input_property which corresponds to a property of self.address object
+		:param input_property: str
+		:return:
+		"""
 		first_octet = str(self.address.ip).split('.')[0]
 		free_bits = str(32-self.ui.spin_subnet.value())
 		available_addresses = 2**int(free_bits) - 2
@@ -124,6 +135,11 @@ class PySub(QMainWindow):
 
 	@staticmethod
 	def __get_str_ranges(ranges):
+		"""
+		Returns string with newlines from input list of subnet ranges
+		:param ranges: list
+		:return:
+		"""
 		ret_value = ''
 
 		for subnet_range in ranges:
@@ -132,6 +148,11 @@ class PySub(QMainWindow):
 		return ret_value
 
 	def __fill_explanation(self, input_property):
+		"""
+		Fills the text input box with HTML preformatted text
+		:param input_property: str
+		:return:
+		"""
 		explanation = self.__generate_explanation(input_property)
 		self.ui.text_explanation.setHtml(explanation)
 
