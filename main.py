@@ -26,6 +26,10 @@ class PySub(QMainWindow):
 
 
 	def __setup_signals(self):
+		"""
+		QT signals definition
+		:return:
+		"""
 		self.ui.btn_default_subnet.clicked.connect(self.__get_default_subnet)
 		self.ui.line_IP.textChanged.connect(self.handle_input)
 		self.ui.spin_subnet.valueChanged.connect(self.handle_input)
@@ -58,6 +62,10 @@ class PySub(QMainWindow):
 		self.ui.spin_subnet.setValue(self.address.default_subnet)
 
 	def __validate_input(self):
+		"""
+		Applies a regular expression that validates IPv4 to QLineEdit field.
+		:return:
+		"""
 		regex = QRegExp()
 		regex.setPattern('(^[2][0-5][0-5]|^[1]{0,1}[0-9]{1,2})\.([0-2][0-5][0-5]|[1]{0,1}[0-9]{1,2})\.([0-2][0-5][0-5]|[1]{0,1}[0-9]{1,2})\.([0-2][0-5][0-5]|[1]{0,1}[0-9]{1,2})$')
 		validator = QRegExpValidator(regex, self.ui.line_IP)
