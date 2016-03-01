@@ -35,6 +35,8 @@ class PySub(QMainWindow):
 		self.ui.btn_explain_address_class.clicked.connect(lambda: self.__fill_explanation('address_class'))
 		self.ui.btn_explain_net_address.clicked.connect(lambda: self.__fill_explanation('network_address'))
 		self.ui.btn_explain_broadcast.clicked.connect(lambda: self.__fill_explanation('broadcast'))
+		self.ui.btn_explain_first_node.clicked.connect(lambda: self.__fill_explanation('first_address'))
+		self.ui.btn_explain_last_node.clicked.connect(lambda: self.__fill_explanation('last_address'))
 
 	def handle_input(self):
 		"""
@@ -133,7 +135,13 @@ class PySub(QMainWindow):
 
 			'broadcast': '''<p>A broadcast address is a logical address at which all devices connected to a network are enabled to receive data packets.
 			<br /><br />Determining broadcast address is not difficult if we know the network address, which is '''+str(self.address.network_address)+'''
-			<br /><br />Broadcast is the last address in the given network, which in our case is <strong>'''+str(self.address.broadcast)+'''</strong></p>'''
+			<br /><br />Broadcast is the last address in the given network, which in our case is <strong>'''+str(self.address.broadcast)+'''</strong></p>''',
+
+			'first_address': '''<p>First usable address is determined by adding one (1) to the network address.
+			<br /><br />First usable address in this case is '<strong'''+str(self.address.first_address)+''''</strong</p>''',
+
+			'last_address': '''<p>Last usable address is determined by substracting one (1) from the broadcast address.
+			<br /><br />Last usable address in this case is <strong>'''+str(self.address.last_address)+'''</strong</p>''',
 		}
 
 		return explanations[input_property]
