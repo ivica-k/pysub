@@ -38,6 +38,7 @@ class PySub(QMainWindow):
 		self.ui.btn_explain_first_node.clicked.connect(lambda: self.__fill_explanation('first_address'))
 		self.ui.btn_explain_last_node.clicked.connect(lambda: self.__fill_explanation('last_address'))
 		self.ui.btn_explain_subnet_mask.clicked.connect(lambda: self.__fill_explanation('subnet_mask'))
+		self.ui.btn_explain_num_ips.clicked.connect(lambda: self.__fill_explanation('num_hosts'))
 
 	def handle_input(self):
 		"""
@@ -139,7 +140,7 @@ class PySub(QMainWindow):
 			<br /><br />Broadcast is the last address in the given network, which in our case is <strong>'''+str(self.address.broadcast)+'''</strong></p>''',
 
 			'first_address': '''<p>First usable address is determined by adding one (1) to the network address.
-			<br /><br />First usable address in this case is '<strong'''+str(self.address.first_address)+''''</strong></p>''',
+			<br /><br />First usable address in this case is <strong>'''+str(self.address.first_address)+'''</strong></p>''',
 
 			'last_address': '''<p>Last usable address is determined by substracting one (1) from the broadcast address.
 			<br /><br />Last usable address in this case is <strong>'''+str(self.address.last_address)+'''</strong></p>''',
@@ -147,6 +148,15 @@ class PySub(QMainWindow):
 			'subnet_mask': '''<p>A subnet mask (or number) is used to determine the number of bits used for the subnet and host portions of the address. The mask is a 32-bit value that uses one-bits for the network and subnet portions and zero-bits for the host portion. Binary, this number looks like this:
 			<br /><br /><strong>'''+str(self.address.binary_subnet_mask)+'''</strong>
 			<br /><br />Converting this binary number to a decimal gives us the subnet mask <strong>'''+str(self.address.subnet_mask)+'''</strong></p>''',
+
+			'num_hosts': '''<p>Number of hosts in a network is calculated using this formula
+			<br /><br />2<sup>BL</sup> - 2
+			<br /><br />
+			where BL is the number of bits left when current subnet mask ('''+str(self.ui.spin_subnet.value())+''')
+			is substracted from 32.</p><p>BL = 32 - '''+str(self.ui.spin_subnet.value())+'''</p>
+			<p>BL = '''+str(free_bits)+'''</p>Additionally, 2 is substracted because network address
+			and broadcast address are not usable for hosts, leaving us with the final calculation:
+			<p>2<sup>'''+str(free_bits)+'''</sup> - 2 = <b>'''+str(self.address.num_hosts)+'''</b></p>'''
 		}
 
 		return explanations[input_property]
