@@ -34,6 +34,7 @@ class PySub(QMainWindow):
 		self.ui.spin_subnet.valueChanged.connect(self.handle_input)
 		self.ui.btn_explain_address_class.clicked.connect(lambda: self.__fill_explanation('address_class'))
 		self.ui.btn_explain_net_address.clicked.connect(lambda: self.__fill_explanation('network_address'))
+		self.ui.btn_explain_broadcast.clicked.connect(lambda: self.__fill_explanation('broadcast'))
 
 	def handle_input(self):
 		"""
@@ -128,7 +129,11 @@ class PySub(QMainWindow):
 				<br /><br />Two is substracted because two addresses are reserved; one for broadcast traffic and one for
 				network address. Dividing number of free IPs with the value from above gives us the number of subnets,
 			  which is '''+str(number_of_subnets)+''' in this case. Subnet range(s):
-				<br /><br />'''+ranges+'''</p>'''
+				<br /><br />'''+ranges+'''</p>''',
+
+			'broadcast': '''<p>A broadcast address is a logical address at which all devices connected to a network are enabled to receive data packets.
+			<br /><br />Determining broadcast address is not difficult if we know the network address, which is '''+str(self.address.network_address)+'''
+			<br /><br />Broadcast is the last address in the given network, which in our case is <strong>'''+str(self.address.broadcast)+'''</strong></p>'''
 		}
 
 		return explanations[input_property]
