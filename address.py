@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from netaddr import *
+import sys
+
+try:
+	from netaddr import IPNetwork
+except ImportError:
+	print("Missing netaddr. Install requirements by running 'pip install -r requirements.txt'")
+	sys.exit(1)
 
 
 class IPAddress:

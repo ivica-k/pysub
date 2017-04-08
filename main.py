@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 
-from PyQt5.QtCore import QRegExp
-from PyQt5.QtGui import QRegExpValidator
-from PyQt5.QtWidgets import QMainWindow, QApplication
 import sys
+
+try:
+	from PyQt5.QtCore import QRegExp
+	from PyQt5.QtGui import QRegExpValidator
+	from PyQt5.QtWidgets import QMainWindow, QApplication
+except ImportError:
+	print("Missing PyQt5. Install requirements by running 'pip install -r requirements.txt'")
+	sys.exit(1)
+
 from address import IPAddress
 from ui.mainwindow import Ui_MainWindow
 
