@@ -1,4 +1,2 @@
-netaddr==0.7.18
-pyxdg==0.25
-team==1.0
-wheel==0.24.0
+netaddr==0.7.19
+PyQt5==5.8.2
