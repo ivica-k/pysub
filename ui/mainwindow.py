@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/mainwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.5.1
+# Created by: PyQt5 UI code generator 5.8.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -261,9 +261,9 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.actionAbout = QtWidgets.QAction(MainWindow)
-        self.actionAbout.setObjectName("actionAbout")
-        self.menuMenu.addAction(self.actionAbout)
+        self.action_quit = QtWidgets.QAction(MainWindow)
+        self.action_quit.setObjectName("action_quit")
+        self.menuMenu.addAction(self.action_quit)
         self.menubar.addAction(self.menuMenu.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -292,5 +292,6 @@ class Ui_MainWindow(object):
         self.btn_explain_num_ips.setText(_translate("MainWindow", "Explain"))
         self.label_39.setText(_translate("MainWindow", "Explanation:"))
         self.menuMenu.setTitle(_translate("MainWindow", "&Menu"))
-        self.actionAbout.setText(_translate("MainWindow", "&About"))
+        self.action_quit.setText(_translate("MainWindow", "&Quit"))
+        self.action_quit.setToolTip(_translate("MainWindow", "Quit"))
 

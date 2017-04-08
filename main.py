@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QRegExpValidator
 from PyQt5.QtWidgets import QMainWindow, QApplication
@@ -39,16 +41,16 @@ class PySub(QMainWindow):
 		self.ui.btn_explain_last_node.clicked.connect(lambda: self.__fill_explanation('last_address'))
 		self.ui.btn_explain_subnet_mask.clicked.connect(lambda: self.__fill_explanation('subnet_mask'))
 		self.ui.btn_explain_num_ips.clicked.connect(lambda: self.__fill_explanation('num_hosts'))
+		self.ui.action_quit.triggered.connect(self.closeApp)
 
 	def handle_input(self):
 		"""
-		"Main" function which
+		Handles IP address input
 		:return:
 		"""
-		in_address = self.ui.line_IP.text()+'/'+str(self.ui.spin_subnet.value())
-		if self.__validate_ip(in_address):  # type: bool
-			ip_with_mask = str(in_address)
-			self.address = IPAddress(ip_with_mask)
+		in_address = "%s/%s" % (self.ui.line_IP.text(), self.ui.spin_subnet.value())
+		if self.__validate_input():  # type: bool
+			self.address = IPAddress(in_address)
 			self.__set_labels()
 
 	def __set_labels(self):
@@ -73,7 +75,7 @@ class PySub(QMainWindow):
 
 	def __validate_input(self):
 		"""
-		Applies a regular expression that validates IPv4 to QLineEdit field.
+		Applies a regular expression to QLineEdit field and validates IPv4
 		:return:
 		"""
 		regex = QRegExp()
@@ -83,13 +85,9 @@ class PySub(QMainWindow):
 		validator = QRegExpValidator(regex, self.ui.line_IP)
 		self.ui.line_IP.setValidator(validator)
 
-	def __validate_ip(self, in_address: str):
-		"""
-		Validates if a user finished typing the address
-		:param in_address: IP address with subnet mask 192.168.0.1/24
-		:return: bool
-		"""
-		if in_address.count('.') == 3 and len(self.ui.line_IP.text()) >= 7 and str(self.ui.line_IP.text()[-1]) != '.':
+		state = validator.validate(self.ui.line_IP.text(), 0)[0]
+
+		if state == validator.Acceptable:
 			return True
 
 	def __generate_explanation(self, input_property):
@@ -99,9 +97,9 @@ class PySub(QMainWindow):
 		:return:
 		"""
 		first_octet = str(self.address.ip).split('.')[0]
-		free_bits = str(32-self.ui.spin_subnet.value())
-		available_addresses = 2**int(free_bits) - 2
-		number_of_subnets = 256//2**int(free_bits)
+		free_bits = str(32 - self.ui.spin_subnet.value())
+		available_addresses = 2 ** int(free_bits) - 2
+		number_of_subnets = 256 // 2 ** int(free_bits)
 
 		ip = str(self.address.ip).split('/')[0].split('.')
 
@@ -121,42 +119,47 @@ class PySub(QMainWindow):
 			<li>128 - 191: class <strong>B</strong></li>
 			<li>192 - 223: class <strong>C</strong></li>
 			</ul>
-			<p>Since the value of the first octet is <strong>'''+first_octet+'''</strong> we determined that the network class
-			is <strong>'''+self.address.network_class+'''</strong></p>''',
+			<p>Since the value of the first octet is <strong>''' + first_octet + '''</strong> we determined that the network class
+			is <strong>''' + self.address.network_class + '''</strong></p>''',
 
 			'network_address': '''<p>Network address value is determined by the subnet mask value,
-			 /'''+str(self.ui.spin_subnet.value())+''' in our case. Maximum subnet mask value is /32, which means
-			  that there are '''+free_bits+''' bits free.
+			 /''' + str(self.ui.spin_subnet.value()) + ''' in our case. Maximum subnet mask value is /32, which means
+			  that there are ''' + free_bits + ''' bits free.
 				<br /><br />IP addressing is based on the binary system so we can easily calculate the number of available
-			  addresses with '''+free_bits+''' free bits:
-			  <br /><br />2<sup>'''+free_bits+'''</sup> - 2 = '''+str(available_addresses)+'''
+			  addresses with ''' + free_bits + ''' free bits:
+			  <br /><br />2<sup>''' + free_bits + '''</sup> - 2 = ''' + str(available_addresses) + '''
 				<br /><br />Two is substracted because two addresses are reserved; one for broadcast traffic and one for
 				network address. Dividing number of free IPs with the value from above gives us the number of subnets,
-			  which is '''+str(number_of_subnets)+''' in this case. Subnet range(s):
-				<br /><br />'''+ranges+'''</p>''',
+			  which is ''' + str(number_of_subnets) + ''' in this case. Subnet range(s):
+				<br /><br />''' + ranges + '''</p>''',
 
 			'broadcast': '''<p>A broadcast address is a logical address at which all devices connected to a network are enabled to receive data packets.
-			<br /><br />Determining broadcast address is not difficult if we know the network address, which is '''+str(self.address.network_address)+'''
-			<br /><br />Broadcast is the last address in the given network, which in our case is <strong>'''+str(self.address.broadcast)+'''</strong></p>''',
+			<br /><br />Determining broadcast address is not difficult if we know the network address, which is ''' + str(
+				self.address.network_address) + '''
+			<br /><br />Broadcast is the last address in the given network, which in our case is <strong>''' + str(
+				self.address.broadcast) + '''</strong></p>''',
 
 			'first_address': '''<p>First usable address is determined by adding one (1) to the network address.
-			<br /><br />First usable address in this case is <strong>'''+str(self.address.first_address)+'''</strong></p>''',
+			<br /><br />First usable address in this case is <strong>''' + str(
+				self.address.first_address) + '''</strong></p>''',
 
 			'last_address': '''<p>Last usable address is determined by substracting one (1) from the broadcast address.
-			<br /><br />Last usable address in this case is <strong>'''+str(self.address.last_address)+'''</strong></p>''',
+			<br /><br />Last usable address in this case is <strong>''' + str(
+				self.address.last_address) + '''</strong></p>''',
 
 			'subnet_mask': '''<p>A subnet mask (or number) is used to determine the number of bits used for the subnet and host portions of the address. The mask is a 32-bit value that uses one-bits for the network and subnet portions and zero-bits for the host portion. Binary, this number looks like this:
-			<br /><br /><strong>'''+str(self.address.binary_subnet_mask)+'''</strong>
-			<br /><br />Converting this binary number to a decimal gives us the subnet mask <strong>'''+str(self.address.subnet_mask)+'''</strong></p>''',
+			<br /><br /><strong>''' + str(self.address.binary_subnet_mask) + '''</strong>
+			<br /><br />Converting this binary number to a decimal gives us the subnet mask <strong>''' + str(
+				self.address.subnet_mask) + '''</strong></p>''',
 
 			'num_hosts': '''<p>Number of hosts in a network is calculated using this formula
 			<br /><br />2<sup>BL</sup> - 2
 			<br /><br />
-			where BL is the number of bits left when current subnet mask ('''+str(self.ui.spin_subnet.value())+''')
-			is substracted from 32.</p><p>BL = 32 - '''+str(self.ui.spin_subnet.value())+'''</p>
-			<p>BL = '''+str(free_bits)+'''</p>Additionally, 2 is substracted because network address
+			where BL is the number of bits left when current subnet mask (''' + str(self.ui.spin_subnet.value()) + ''')
+			is substracted from 32.</p><p>BL = 32 - ''' + str(self.ui.spin_subnet.value()) + '''</p>
+			<p>BL = ''' + str(free_bits) + '''</p>Additionally, 2 is substracted because network address
 			and broadcast address are not usable for hosts, leaving us with the final calculation:
-			<p>2<sup>'''+str(free_bits)+'''</sup> - 2 = <b>'''+str(self.address.num_hosts)+'''</b></p>'''
+			<p>2<sup>''' + str(free_bits) + '''</sup> - 2 = <b>''' + str(self.address.num_hosts) + '''</b></p>'''
 		}
 
 		return explanations[input_property]
@@ -171,7 +174,7 @@ class PySub(QMainWindow):
 		ret_value = ''
 
 		for subnet_range in ranges:
-			ret_value += str(subnet_range)+'<br />'
+			ret_value += str(subnet_range) + '<br />'
 
 		return ret_value
 
@@ -183,6 +186,9 @@ class PySub(QMainWindow):
 		"""
 		explanation = self.__generate_explanation(input_property)
 		self.ui.text_explanation.setHtml(explanation)
+
+	def closeApp(self):
+		QApplication.quit()
 
 if __name__ == '__main__':
 	app = QApplication(sys.argv)

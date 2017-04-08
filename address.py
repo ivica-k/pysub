@@ -11,11 +11,33 @@ class IPAddress:
 			self.network_address = IPNetwork(input_address).network
 			self.subnet_mask = IPNetwork(input_address).netmask
 			self.first_address = self.network_address + 1
-			self.last_address = self.broadcast - 1
-			self.num_hosts = IPNetwork(input_address).size - 2
+			self.num_hosts = self.__get_num_hosts(IPNetwork(input_address).size)
 			self.binary_subnet_mask = self.subnet_mask.bits()
 			self.network_class = self.__get_network_class(input_address)  # type: str
 			self.default_subnet = self.__get_default_subnet(input_address)  # type: int
+
+			self.__netmask_sanity_check()
+
+	def __netmask_sanity_check(self):
+		"""
+		Sets proper values to fields when subnet mask exceeds 31
+		:return:
+		"""
+		if self.broadcast:
+			self.last_address = self.broadcast - 1
+		else:
+			self.broadcast = self.ip
+			self.last_address = ""
+			self.first_address = ""
+
+	@staticmethod
+	def __get_num_hosts(network_size):
+		num_hosts = 0
+
+		if network_size >= 2:
+			num_hosts = network_size - 2
+
+		return num_hosts
 
 	@staticmethod
 	def __get_network_class(input_address):

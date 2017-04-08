@@ -469,14 +469,17 @@
     <property name="title">
      <string>&amp;Menu</string>
     </property>
-    <addaction name="actionAbout"/>
+    <addaction name="action_quit"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionAbout">
+  <action name="action_quit">
    <property name="text">
-    <string>&amp;About</string>
+    <string>&amp;Quit</string>
+   </property>
+   <property name="toolTip">
+    <string>Quit</string>
    </property>
   </action>
  </widget>
