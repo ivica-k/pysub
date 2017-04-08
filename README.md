@@ -11,3 +11,6 @@ Run `main.py`
 ```
 ./main.py
 ```
+
+# Screenshot (KDE Plasma)
+![alt tag](screenshot.png)
